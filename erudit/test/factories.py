@@ -45,6 +45,7 @@ class JournalFactory(factory.django.DjangoModelFactory):
     name = factory.Sequence(lambda n: 'Revue{}'.format(n))
     localidentifier = factory.Sequence(lambda n: 'journal{}'.format(n))
     redirect_to_external_url = False
+    last_publication_year = dt.datetime.now().year
 
     class Meta:
         model = 'erudit.journal'
@@ -89,6 +90,12 @@ class IssueFactory(factory.django.DjangoModelFactory):
         model = 'erudit.issue'
 
 
+class EmbargoedIssueFactory(IssueFactory):
+
+    date_published = dt.datetime.now().date()
+    year = date_published.year
+
+
 class IssueContributorFactory(factory.django.DjangoModelFactory):
 
     issue = factory.SubFactory(IssueFactory)
@@ -122,6 +129,11 @@ class ArticleFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = 'erudit.article'
+
+
+class EmbargoedArticleFactory(ArticleFactory):
+
+    issue = factory.SubFactory(EmbargoedIssueFactory)
 
 
 class ArticleTitleFactory(factory.django.DjangoModelFactory):
