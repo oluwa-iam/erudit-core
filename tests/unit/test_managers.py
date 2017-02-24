@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from django.http import Http404
 from erudit.models import Article
 from erudit.models import Issue
 from erudit.models import Journal
@@ -43,6 +44,15 @@ class TestLegacyJournalManager(BaseEruditTestCase):
         # Run & check
         self.assertEqual(Journal.legacy_objects.get_by_id('foobar'), journal)
         self.assertEqual(Journal.legacy_objects.get_by_id('foobar42'), journal)
+
+    def test_can_return_a_journal_or_404_using_its_localidentifier_or_its_code(self):
+        # Setup
+        journal = JournalFactory.create(
+            collection=self.collection, localidentifier='foobar42', code='foobar')
+        # Run & check
+        self.assertEqual(Journal.legacy_objects.get_by_id_or_404('foobar'), journal)
+        with self.assertRaises(Http404):
+            Journal.legacy_objects.get_by_id_or_404('wrong_code')
 
 
 class TestInternalIssueManager(BaseEruditTestCase):

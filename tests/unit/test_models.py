@@ -597,7 +597,7 @@ class TestArticle(BaseEruditTestCase):
         article_4 = ArticleFactory.create(issue=issue_4)
         article_5 = ArticleFactory.create(issue=issue_5)
         # Run & check
-        self.assertFalse(article_1.embargoed)
+        self.assertTrue(article_1.embargoed)
         self.assertTrue(article_2.embargoed)
         self.assertTrue(article_3.embargoed)
         self.assertFalse(article_4.embargoed)
