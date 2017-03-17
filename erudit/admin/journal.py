@@ -97,7 +97,7 @@ class IssueAdmin(admin.ModelAdmin):
         'journal', 'year', 'volume', 'number', 'title', 'localidentifier',
         'view_issue_on_site', )
     search_fields = ('id', 'localidentifier', )
-    list_filter = ('is_published', 'journal__collection', 'journal__name', )
+    list_filter = ('is_published', 'journal__collection', 'is_deleted', 'journal__name', )
     actions = [
         'make_published', 'make_unpublished',
         'force_free_access_to_true', 'force_free_access_to_false',
