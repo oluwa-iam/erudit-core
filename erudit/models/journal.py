@@ -155,6 +155,10 @@ class Journal(FedoraMixin, FedoraDated, OAIDated):
     """ Whether the Journal is active or not. An inactive journal is
     a journal that still publish issues """
 
+    is_deleted = models.BooleanField(
+        default=False, verbose_name=_('Est supprimée'),
+        help_text=_('Mettre à Oui pour déclarer la revue comme supprimée'))
+
     # The field defines the users who can interact this object (coupled with permissions)
     members = models.ManyToManyField(
         User,
@@ -276,7 +280,7 @@ class Journal(FedoraMixin, FedoraDated, OAIDated):
     @property
     def published_issues(self):
         """ Return the published issues of this Journal. """
-        return self.issues.filter(is_published=True)
+        return self.issues.filter(is_published=True, is_deleted=False)
 
     @property
     def published_open_access_issues(self):
@@ -383,6 +387,11 @@ class Issue(FedoraMixin, FedoraDated, OAIDated):
 
     is_published = models.BooleanField(default=False, verbose_name=_('Est publié'))
     """ Defines if an issue is published """
+
+    is_deleted = models.BooleanField(
+        default=False, verbose_name=_('Est supprimé'),
+        help_text=_('Mettre à Oui pour déclarer le numéro comme supprimée'))
+    """ Defines if an issue is deleted """
 
     copyrights = models.ManyToManyField(
         Copyright, related_name=_('issues'), verbose_name=_("Droits d'auteurs"))
@@ -677,6 +686,11 @@ class Article(EruditDocument, FedoraMixin, FedoraDated, OAIDated):
     copyrights = models.ManyToManyField(
         Copyright, related_name=_('articles'), verbose_name=_("Droits d'auteurs"))
     """ The copyrights of the article """
+
+    is_deleted = models.BooleanField(
+        default=False, verbose_name=_('Est supprimé'),
+        help_text=_('Mettre à Oui pour déclarer l\'article comme supprimée'))
+    """ Defines if an issue is deleted """
 
     objects = PolymorphicManager()
     internal_objects = InternalArticleManager()

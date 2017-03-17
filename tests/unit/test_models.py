@@ -51,6 +51,16 @@ class TestJournal(BaseEruditTestCase):
         # Run & check
         self.assertEqual(set(self.journal.published_issues), {issue_1, issue_2})
 
+    def test_can_return_published_issues_without_those_deleted(self):
+         # Setup
+        issue_1 = IssueFactory.create(journal=self.journal, year=2010)
+        issue_2 = IssueFactory.create(journal=self.journal, year=2009)
+        issue_3 = IssueFactory.create(journal=self.journal, year=2011, is_deleted=True)
+        issue_4 = IssueFactory.create(journal=self.journal, year=2007, is_deleted=True)
+
+        # Run & check
+        self.assertEqual(set(self.journal.published_issues), {issue_1, issue_2})
+
     def test_can_return_when_date_embargo_begins(self):
         # Setup
         self.journal.open_access = False
@@ -174,6 +184,7 @@ class TestJournal(BaseEruditTestCase):
         ) - dr.relativedelta(months=ml)
         date_issue_4 = now_dt - dr.relativedelta(months=(ml + 5))
         date_issue_5 = now_dt - dr.relativedelta(months=((ml + 5) * 2))
+        date_issue_6 = now_dt - dr.relativedelta(months=((ml + 5) * 3))
         IssueFactory.create(
             journal=self.journal, year=date_issue_1.year,
             date_published=date_issue_1)
@@ -189,6 +200,9 @@ class TestJournal(BaseEruditTestCase):
         issue_5 = IssueFactory.create(
             journal=self.journal, year=date_issue_5.year,
             date_published=date_issue_5)
+        IssueFactory.create(
+            journal=self.journal, year=date_issue_6.year,
+            date_published=date_issue_6, is_deleted=True)
         # Run & check
         self.assertEqual(
             self.journal.published_open_access_issues_period_coverage,
