@@ -52,11 +52,11 @@ class TestJournal(BaseEruditTestCase):
         self.assertEqual(set(self.journal.published_issues), {issue_1, issue_2})
 
     def test_can_return_published_issues_without_those_deleted(self):
-         # Setup
+        # Setup
         issue_1 = IssueFactory.create(journal=self.journal, year=2010)
         issue_2 = IssueFactory.create(journal=self.journal, year=2009)
-        issue_3 = IssueFactory.create(journal=self.journal, year=2011, is_deleted=True)
-        issue_4 = IssueFactory.create(journal=self.journal, year=2007, is_deleted=True)
+        IssueFactory.create(journal=self.journal, year=2011, is_deleted=True)
+        IssueFactory.create(journal=self.journal, year=2007, is_deleted=True)
 
         # Run & check
         self.assertEqual(set(self.journal.published_issues), {issue_1, issue_2})

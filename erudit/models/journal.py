@@ -390,7 +390,7 @@ class Issue(FedoraMixin, FedoraDated, OAIDated):
 
     is_deleted = models.BooleanField(
         default=False, verbose_name=_('Est supprimé'),
-        help_text=_('Mettre à Oui pour déclarer le numéro comme supprimée'))
+        help_text=_('Mettre à Oui pour déclarer le numéro comme supprimé'))
     """ Defines if an issue is deleted """
 
     copyrights = models.ManyToManyField(
@@ -689,8 +689,8 @@ class Article(EruditDocument, FedoraMixin, FedoraDated, OAIDated):
 
     is_deleted = models.BooleanField(
         default=False, verbose_name=_('Est supprimé'),
-        help_text=_('Mettre à Oui pour déclarer l\'article comme supprimée'))
-    """ Defines if an issue is deleted """
+        help_text=_('Mettre à Oui pour déclarer l\'article comme supprimé'))
+    """ Defines if an article is deleted """
 
     objects = PolymorphicManager()
     internal_objects = InternalArticleManager()
